@@ -18,9 +18,7 @@ from utils import DiceLoss
 from torchvision import transforms
 
 
-# ============================================================
-# 基于混淆矩阵的分割指标:mIoU / Pixel Accuracy / Recall / Precision
-# ============================================================
+
 class SegmentationMetric(object):
     def __init__(self, num_classes, ignore_index=None):
         self.num_classes = num_classes
@@ -75,9 +73,7 @@ class SegmentationMetric(object):
         self.confusion_matrix.fill(0)
 
 
-# ============================================================
-# 逐体积推理,返回与 label 同形状的预测,用于更新混淆矩阵
-# ============================================================
+
 def predict_volume_for_metrics(image, model, patch_size):
     """
     image: torch.Tensor, shape (1, D, H, W) or (1, H, W) from test_vol loader
@@ -122,9 +118,7 @@ def predict_volume_for_metrics(image, model, patch_size):
         return pred
 
 
-# ============================================================
-# 新增:统计模型参数量、FLOPs、GPU 显存、推理延迟和吞吐量
-# ============================================================
+
 def print_model_stats(model, img_size, in_channels=1, device='cuda'):
     """
     打印:

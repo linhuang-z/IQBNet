@@ -48,11 +48,7 @@ ACT2FN = {
 }
 
 
-# ==========================================================================
-# Innovation: BFSR / 0.8375 module
-# Bottleneck Frequency-Spatial Adaptive Refinement
-# Inserted after Transformer Encoder and before Decoder.
-# ==========================================================================
+
 class BottleneckFreqSpatialRefinement(nn.Module):
     def __init__(self, hidden_size, init_sigma=1.0, reduction=4):
         super(BottleneckFreqSpatialRefinement, self).__init__()
@@ -216,14 +212,7 @@ class QueryPixelAttention(nn.Module):
 
 
 class CrossHeadQueryInteraction(nn.Module):
-    """
-    Explicit Q-with-other-Q interaction across query heads.
 
-    q: [B, N, H * Dh]
-    reshape to [B, N, H, Dh], then each query head attends to other query heads
-    at the same token location:
-        Q_other = softmax(Q_h K_h^T) V_h
-    """
     def __init__(self, num_heads, head_dim, dropout_rate=0.0):
         super(CrossHeadQueryInteraction, self).__init__()
         self.num_heads = num_heads
@@ -281,13 +270,7 @@ class CrossHeadQueryInteraction(nn.Module):
 
 
 class CrossGroupQueryInteraction(nn.Module):
-    """
-    GQA-specific Q-with-other-Q interaction across query groups.
 
-    In GQA, several Q heads share one K/V head. Here each KV-corresponding
-    query group interacts with other query groups, so Q is not isolated inside
-    its own group.
-    """
     def __init__(self, num_heads, head_dim, num_kv_heads=1, dropout_rate=0.0):
         super(CrossGroupQueryInteraction, self).__init__()
         self.num_heads = num_heads
